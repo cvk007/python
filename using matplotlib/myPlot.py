@@ -3,7 +3,6 @@ from collections import Counter
 from matplotlib import pyplot as plt
 import numpy as np
 
-plt.style.use('fivethirtyeight')
 plt.title('Wine Servings in various Countries')
 with open('data.csv') as csv_file:
     csv_reader = csv.DictReader(csv_file)
@@ -27,19 +26,32 @@ plt.bar(x_index-width,beer_servings,width=width,label='Beer')
 plt.bar(x_index,sprit_servings,width=width,label='Spirit')
 plt.bar(x_index+width,wine_servings,width=width,label='Wine')
 plt.bar(x_index+2*width,total_litres_of_pure_alcohol,width=width,label='total pure consumption alcohol in litres')
-plt.legend()
 
 plt.ylabel('Servings',fontsize=20)
 plt.xlabel('Countries',fontsize=20)
 
 
 plt.yticks(fontsize=8)
-plt.xticks(ticks=x_index,labels=country,rotation=45,fontsize=8)
+plt.xticks(ticks=x_index,labels=country,rotation=90,fontsize=8)
+plt.legend(loc='upper center', bbox_to_anchor=(1.12, 0.8), shadow=True, ncol=1)
 
-plt.grid(True)
 
-plt.tight_layout()
+N = 150
+data = np.linspace(0, N, N)
 
-#plt.savefig('plot.png')
+plt.grid()
 
+plt.gca().margins(x=0)
+plt.gcf().canvas.draw()
+tl = plt.gca().get_xticklabels()
+maxsize = max([t.get_window_extent().width for t in tl])
+m = 0.2 # inch margin
+s = maxsize/plt.gcf().dpi*N+2*m
+margin = m/plt.gcf().get_size_inches()[0]
+
+plt.gcf().subplots_adjust(left=margin, right=1.-margin)
+plt.gcf().set_size_inches(s, plt.gcf().get_size_inches()[1])
+
+figure = plt.gcf()
+figure.set_size_inches(15, 7)
 plt.show()
